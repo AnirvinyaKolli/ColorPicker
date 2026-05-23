@@ -116,4 +116,6 @@ void MyFrame::OnButtonPress(wxCommandEvent& e) {
 void MyFrame::OnSwatchPressed(wxCommandEvent& e) {
     SavedSwatch* clicked = (SavedSwatch*)e.GetEventObject();
     copyToClipboard(clicked->hexcode); 
+
+    wxMessageBox("Text copied", "confirmation", wxOK, this);
 }
