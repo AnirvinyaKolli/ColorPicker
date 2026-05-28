@@ -2,66 +2,64 @@
 #include "ColorPicker.h"
 #include <string>
 #include <vector>
+
 class MyFrame : public wxFrame {
     public:
         MyFrame() 
         : wxFrame(nullptr, wxID_ANY, "Color Picker", wxDefaultPosition, wxSize(300, 500))
         {
-
-            //Main panel 
+            // Main panel 
             panel = new wxPanel(this);
-            //Main sizer
+            // Main sizer
             wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
+            mainSizer->AddSpacer(10);
             panel->SetSizer(mainSizer); 
 
             // Sliders 
             mixerPanel = new wxPanel(panel);
             wxBoxSizer* mixerSizer = new wxBoxSizer(wxHORIZONTAL);
+            mixerSizer->AddSpacer(10);
             mixerPanel->SetSizer(mixerSizer);
 
             wxPanel* sliderPanel = new wxPanel(mixerPanel);
-            wxBoxSizer* sliderSizer = new wxBoxSizer(wxVERTICAL); 
+            wxBoxSizer* sliderSizer = new wxBoxSizer(wxVERTICAL);
+            sliderSizer->AddSpacer(5);
             sliderPanel->SetSizer(sliderSizer); 
 
-            mixerSizer->Add(sliderPanel);
+            mixerSizer->Add(sliderPanel, 0, wxALL, 5);
 
             swatch = new wxPanel(mixerPanel, wxID_ANY, wxDefaultPosition, wxSize(80, 80));
             swatch->SetBackgroundColour(wxColour(0,0,0));
-            
-            mixerSizer->Add(swatch);
+            mixerSizer->Add(swatch, 0, wxALL, 10);
+            mixerSizer->AddSpacer(10);
 
-            mainSizer->Add(mixerPanel);
-
-            
+            mainSizer->Add(mixerPanel, 0, wxALL, 0);
 
             // Saved swatches
             swatchPanel = new wxPanel(panel);
-            mainSizer->Add(swatchPanel);
+            mainSizer->Add(swatchPanel, 1, wxALL | wxEXPAND, 10);
 
-
-            
             hexText = new wxStaticText(sliderPanel, wxID_ANY, "#000000");
-            sliderSizer->Add(hexText);
+            sliderSizer->Add(hexText, 0, wxALL, 5);
 
             // Defining sliders
             for (int i = 0; i < 3; i++) {
                 sliders[i] = new wxSlider(sliderPanel, wxID_ANY, 0, 0, 255);
                 sliders[i]->Bind(wxEVT_SLIDER, &MyFrame::OnSliderChange, this);
-                sliderSizer->Add(sliders[i]);
-
+                sliderSizer->Add(sliders[i], 0, wxALL | wxEXPAND, 5);
             }
-            
             
             // Save button
             saveButton = new wxButton(sliderPanel, wxID_ANY, "Save color"); 
             saveButton->Bind(wxEVT_BUTTON, &MyFrame::OnButtonPress, this);
-            sliderSizer->Add(saveButton);
+            sliderSizer->Add(saveButton, 0, wxALL | wxEXPAND, 5);
+            sliderSizer->AddSpacer(5);
 
             // Sizer for saved swatches 
             swatchSizer = new wxBoxSizer(wxHORIZONTAL);  
             swatchPanel->SetSizer(swatchSizer);
 
-            // Color for Astheticss 
+            // Color for Aesthetics 
             hexText->SetForegroundColour(wxColour(255,255,255));
             panel->SetBackgroundColour(wxColour(50,50,50));
         }
@@ -83,7 +81,6 @@ class MyFrame : public wxFrame {
         void OnSliderChange(wxCommandEvent& e);
         void OnButtonPress(wxCommandEvent& e); 
         void OnSwatchPressed(wxCommandEvent& e);
-
 };
 
 class ColorPicker : public wxApp {
@@ -94,7 +91,6 @@ class ColorPicker : public wxApp {
             frame->Show(true);
             return true;
         }
-        
 };
 
 class SavedSwatch : public wxButton {
@@ -106,7 +102,6 @@ class SavedSwatch : public wxButton {
 };
 
 wxIMPLEMENT_APP(ColorPicker);
-
 
 void MyFrame::OnSliderChange(wxCommandEvent& e) {
     int rVal = sliders[0]->GetValue();
@@ -146,7 +141,7 @@ void MyFrame::OnButtonPress(wxCommandEvent& e) {
         )
     );
 
-    swatchSizer->Add(addedSwatch);
+    swatchSizer->Add(addedSwatch, 0, wxALL, 5);
     addedSwatch->SetBackgroundColour(savedColor);
     addedSwatch->Bind(wxEVT_BUTTON, &MyFrame::OnSwatchPressed, this);
     addedSwatch->Show();
